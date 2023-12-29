@@ -30,6 +30,10 @@ export default defineComponent({
     "toggle-favorite": function (id: string) {
       return !!id;
     },
+
+    "remove-friend": function (id: string) {
+      return !!id;
+    },
   },
 
   data(): { showDetails: boolean } {
@@ -59,6 +63,7 @@ export default defineComponent({
       <li><strong>Contact:</strong>{{ contact }}</li>
       <li><strong>Email:</strong>{{ emailAddress }}</li>
     </ul>
+    <button @click="$emit('remove-friend', id)">Delete Details</button>
   </li>
 </template>
 

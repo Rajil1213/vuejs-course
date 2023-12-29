@@ -52,6 +52,10 @@ export default {
     addFriend(friend: Friend) {
       this.friends.push(friend);
     },
+
+    removeFriend(id: string) {
+      this.friends = this.friends.filter(({ id: friendId }) => id !== friendId);
+    },
   },
 };
 </script>
@@ -68,6 +72,7 @@ export default {
       :email-address="email"
       :is-favorite="isFavorite"
       @toggle-favorite="toggleFavorite"
+      @remove-friend="removeFriend"
     />
   </ul>
   <NewFriend @add-friend="addFriend" />
