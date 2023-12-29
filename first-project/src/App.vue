@@ -1,9 +1,19 @@
 <script lang="ts">
 import FriendContact from "@/components/FriendContact.vue";
 
+export type Friend = {
+  id: string;
+  name: string;
+  phone: number;
+  email: string;
+  isFavorite: boolean;
+};
+
 export default {
   components: { FriendContact },
-  data(): { friends: Array<{ id: string; name: string; phone: number; email: string }> } {
+  data(): {
+    friends: Array<Friend>;
+  } {
     return {
       friends: [
         {
@@ -11,15 +21,26 @@ export default {
           name: "John Doe",
           phone: 1234,
           email: "john@mail.com",
+          isFavorite: false,
         },
         {
           id: "jane",
           name: "Jane Doe",
           phone: 5678,
           email: "jane@mail.com",
+          isFavorite: true,
         },
       ],
     };
+  },
+
+  methods: {
+    toggleFavorite(id: string) {
+      const identifiedFriend = this.friends.find(({ id: friendId }) => id === friendId);
+      if (!identifiedFriend) return;
+
+      identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+    },
   },
 };
 </script>
@@ -27,9 +48,16 @@ export default {
 <template>
   <header><h1>My Friends</h1></header>
   <ul>
-    <li v-for="friend in friends" :key="friend.id">
-      <FriendContact />
-    </li>
+    <FriendContact
+      v-for="{ id, name, email, phone, isFavorite } in friends"
+      :key="id"
+      :id="id"
+      :contact="phone"
+      :name="name"
+      :email-address="email"
+      :is-favorite="isFavorite"
+      @toggle-favorite="toggleFavorite"
+    />
   </ul>
 </template>
 

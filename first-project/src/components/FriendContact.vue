@@ -4,37 +4,62 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "FriendContact",
 
-  data(): { showDetails: boolean, friend: { id: string; name: string; contact: number; email: string; }}  {
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    contact: Number, // optional
+    emailAddress: {
+      type: String,
+      required: true,
+    },
+    isFavorite: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+
+  // emits: ["toggle-favorite"],
+  emits: {
+    "toggle-favorite": function (id: string) {
+      return !!id;
+    },
+  },
+
+  data(): { showDetails: boolean } {
     return {
       showDetails: true,
-      friend: {
-        id: "john",
-        name: "John Doe",
-        contact: 1234,
-        email: "john@mail.com",
-      },
     };
   },
 
   methods: {
     toggleShow() {
       this.showDetails = !this.showDetails;
-    }
-  }
+    },
+
+    toggleFavorite() {
+      this.$emit("toggle-favorite", this.id);
+    },
+  },
 });
 </script>
 
 <template>
   <li>
-    <h2>{{ friend.name }}</h2>
-    <button @click="toggleShow">{{ showDetails ? "Hide" : "Show"}} Details</button>
+    <h2>{{ name }}{{ isFavorite ? " (Favorite)" : "" }}</h2>
+    <button @click="toggleFavorite">Toggle Favorite</button>&nbsp;
+    <button @click="toggleShow">{{ showDetails ? "Hide" : "Show" }} Details</button>
     <ul v-if="showDetails">
-      <li><strong>Contact:</strong>{{friend.contact}}</li>
-      <li><strong>Email:</strong>{{friend.email}}</li>
+      <li><strong>Contact:</strong>{{ contact }}</li>
+      <li><strong>Email:</strong>{{ emailAddress }}</li>
     </ul>
   </li>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
