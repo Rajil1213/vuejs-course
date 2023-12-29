@@ -1,5 +1,7 @@
 <script lang="ts">
 import FriendContact from "@/components/FriendContact.vue";
+import NewFriend from "@/components/NewFriend.vue";
+import newFriend from "@/components/NewFriend.vue";
 
 export type Friend = {
   id: string;
@@ -10,7 +12,12 @@ export type Friend = {
 };
 
 export default {
-  components: { FriendContact },
+  computed: {
+    newFriend() {
+      return newFriend;
+    },
+  },
+  components: { NewFriend, FriendContact },
   data(): {
     friends: Array<Friend>;
   } {
@@ -41,6 +48,10 @@ export default {
 
       identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
     },
+
+    addFriend(friend: Friend) {
+      this.friends.push(friend);
+    },
   },
 };
 </script>
@@ -59,6 +70,7 @@ export default {
       @toggle-favorite="toggleFavorite"
     />
   </ul>
+  <NewFriend @add-friend="addFriend" />
 </template>
 
 <style>
